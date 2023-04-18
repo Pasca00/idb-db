@@ -16,7 +16,6 @@ class DBController {
       var response_str = "";
 
       if (req.params.entity === "user") {
-        
         var req_user = User.from(req.body);
 
         const userRepository = getRepository(User);
