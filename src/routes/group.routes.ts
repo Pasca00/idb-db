@@ -14,4 +14,13 @@ router.post("/update", GroupController.update);
 //Delete an group by id
 router.post("/delete/:id", GroupController.delete);
 
+//Find group
+router.get("/find", GroupController.find);
+
+//FindOneOrFail
+router.get("/findOneOrFail", GroupController.findOneOrFail);
+
+// Returns a list of 10 posts from corresponding group, based on requested index
+router.get('/getPosts', GroupController.getPosts);
+
 export default router;

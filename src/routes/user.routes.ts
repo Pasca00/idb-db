@@ -14,4 +14,7 @@ router.post("/update", UserController.update);
 //Delete an user by id
 router.post("/delete/:id", UserController.delete);
 
+//FindOneOrFail
+router.get("/findOneOrFail", UserController.findOneOrFail);
+
 export default router;

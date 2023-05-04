@@ -37,7 +37,7 @@ const main = async () => {
   //middlewares
   app.use(helmet());
   app.use(cors({
-    origin: ['http://localhost:4200']
+    origin: ['http://localhost:4203']
   }))
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(upload());
