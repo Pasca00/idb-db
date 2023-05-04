@@ -6,7 +6,7 @@ const router = Router();
 router.post("/create", PostFileController.create);
 
 //Get postFile
-router.get("/get/:by/:id", PostFileController.get);
+router.get("/get/:id", PostFileController.get);
 
 //Update an postFile
 router.post("/update", PostFileController.update);

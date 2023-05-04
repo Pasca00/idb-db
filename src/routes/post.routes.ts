@@ -6,7 +6,7 @@ const router = Router();
 router.post("/create", PostController.create);
 
 //Get post
-router.get("/get/:by/:id", PostController.get);
+router.get("/get/:id", PostController.get);
 
 //Update an post
 router.post("/update", PostController.update);

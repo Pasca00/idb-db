@@ -6,7 +6,7 @@ const router = Router();
 router.post("/create", GroupController.create);
 
 //Get group
-router.get("/get/:by/:id", GroupController.get);
+router.get("/get/:id", GroupController.get);
 
 //Update an group
 router.post("/update", GroupController.update);
