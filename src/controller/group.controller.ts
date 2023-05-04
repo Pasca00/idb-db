@@ -114,29 +114,29 @@ class GroupController {
   };
 
   static getPosts = async (req: Request, res: Response) => {
-    let lastIndex = req.body.lastIndex;
-    let userId = req.body.userId;
-    let groupId = req.body.groupId;
+        let lastIndex = req.body.lastIndex;
+        let userId = req.body.userId;
+        let groupId = req.body.groupId;
 
-    try {
-        let user = await getRepository(User).findOneOrFail({ where: { id: userId } })
-        let query = await getRepository(Post).createQueryBuilder("post")
-            .where("post.groupId = :groupId", { groupId: groupId})
-            .andWhere("post.id > :lastIndex", { lastIndex: lastIndex })
-            .loadRelationCountAndMap("post.likeCount", "post.userLikes")
-            .loadRelationIdAndMap("post.userLikesIds", "post.userLikes")
-            .orderBy("post.id").limit(10);
+        try {
+            let user = await getRepository(User).findOneOrFail({ where: { id: userId } })
+            let query = await getRepository(Post).createQueryBuilder("post")
+                .where("post.groupId = :groupId", { groupId: groupId})
+                .andWhere("post.id > :lastIndex", { lastIndex: lastIndex })
+                .loadRelationCountAndMap("post.likeCount", "post.userLikes")
+                .loadRelationIdAndMap("post.userLikesIds", "post.userLikes")
+                .orderBy("post.id").limit(10);
 
-        let posts = await query.getMany();
+            let posts = await query.getMany();
 
-        checkLikedPosts(user, posts);
-        getTimeCreated(posts);
+            checkLikedPosts(user, posts);
+            getTimeCreated(posts);
 
-        res.status(HttpStatus.OK).send(posts);
-    } catch (e) {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+            res.status(HttpStatus.OK).send(posts);
+        } catch (e) {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+        }
     }
-}
 
 }
 

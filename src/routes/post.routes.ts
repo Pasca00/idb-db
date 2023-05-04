@@ -14,4 +14,10 @@ router.post("/update", PostController.update);
 //Delete an post by id
 router.post("/delete/:id", PostController.delete);
 
+//CreatePost
+router.post("/createPost", PostController.createPost);
+
+//GetPhoto
+router.get("/getPhoto", PostController.getPhoto);
+
 export default router;
