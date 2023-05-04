@@ -13,6 +13,11 @@ import {PostFile} from "./postFile";
 
 @Entity()
 export class Post {
+
+    static from(json: any) {
+        return Object.assign(new Post(), json);
+    }
+
     @PrimaryGeneratedColumn()
     id!: number;
 
