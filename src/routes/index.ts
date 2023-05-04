@@ -1,7 +1,9 @@
 import {Router} from "express";
-import db from "./db.routes";
+import user from "./user.routes";
 
 const routes = Router();
 
-routes.use("/db", db);
+routes.use("/user", user);
+routes.use("/group", user);
+
 export default routes;

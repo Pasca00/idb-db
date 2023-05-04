@@ -8,6 +8,8 @@ import {
   Unique
 } from "typeorm";
 import {classToPlain, Exclude} from "class-transformer";
+import { Group } from "./group";
+import { Post } from "./post";
 
 @Entity()
 @Unique(["username"])
@@ -50,6 +52,20 @@ export class User {
 
   @Column()
   profilePic!: string;
+
+  @ManyToMany(() => Group, group => group.users)
+  @JoinTable({name: 'group_user'})
+  groups!: Group[];
+
+  @OneToMany(() => Post, post => post.author)
+  posts!: Post[];
+
+  @ManyToMany(() => Post, post => post.userLikes)
+  @JoinTable({ name: 'user_like' })
+  likedPosts!: Post[];
+
+  @ManyToMany(() => Group, group => group.moderators)
+  moderatedGroups!: Group[];
 
   hashPassword() {
       // this.password = bcrypt.hashSync(this.password, 8);
