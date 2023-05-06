@@ -1,7 +1,14 @@
 import {Router} from "express";
-import db from "./db.routes";
+import user from "./user.routes";
+import group from "./group.routes";
+import post from "./post.routes";
+import postfile from "./postFile.routes";
 
 const routes = Router();
 
-routes.use("/db", db);
+routes.use("/user", user);
+routes.use("/group", group);
+routes.use("/post", post);
+routes.use("/postfile", postfile);
+
 export default routes;
