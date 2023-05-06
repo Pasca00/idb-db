@@ -1,13 +1,10 @@
 import {
-  Column, CreateDateColumn,
+  Column,
   Entity,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
   PrimaryGeneratedColumn,
   Unique
 } from "typeorm";
-import {classToPlain, Exclude} from "class-transformer";
+import {classToPlain} from "class-transformer";
 
 @Entity()
 @Unique(["username"])
@@ -41,9 +38,6 @@ export class User {
 
   @Column()
   email!: string;
-
-  @Column()
-  university!: string;
 
   @Column()
   imageString!: string;
