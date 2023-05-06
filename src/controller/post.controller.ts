@@ -145,6 +145,7 @@ class PostController {
     static getPhoto = async (req: Request, res: Response) => {
         const image = req.body.image;
         try {
+          
           const photo = await FileController.getPhoto(image);
           res.status(HttpStatus.OK).send({imageString: photo});
         } catch (e) {
