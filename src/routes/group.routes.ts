@@ -15,12 +15,12 @@ router.post("/update", GroupController.update);
 router.post("/delete/:id", GroupController.delete);
 
 //Find group
-router.get("/find", GroupController.find);
+router.post("/find", GroupController.find);
 
 //FindOneOrFail
-router.get("/findOneOrFail", GroupController.findOneOrFail);
+router.post("/findOneOrFail", GroupController.findOneOrFail);
 
 // Returns a list of 10 posts from corresponding group, based on requested index
-router.get('/getPosts', GroupController.getPosts);
+router.post('/getPosts', GroupController.getPosts);
 
 export default router;

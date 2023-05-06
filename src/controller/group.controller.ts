@@ -91,10 +91,9 @@ class GroupController {
     let response = null as any;
     try {
         const groupRepository = getRepository(Group);
-        console.log(req.body);
         const groups = await groupRepository.find(req.body);
 
-      res.status(HttpStatus.OK).send(groups);
+        res.status(HttpStatus.OK).send(JSON.stringify(groups));
     } catch (e) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
     }

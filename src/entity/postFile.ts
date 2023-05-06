@@ -1,5 +1,6 @@
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Post} from "./post";
+import {classToPlain, Exclude} from "class-transformer";
 
 @Entity()
 export class PostFile {
@@ -17,4 +18,8 @@ export class PostFile {
     @ManyToOne(() => Post, post => post.postFiles)
     @JoinColumn()
     post!: Post;
+
+    toJSON() {
+        return classToPlain(this);
+    }
 }

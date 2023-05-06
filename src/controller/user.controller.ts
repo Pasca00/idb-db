@@ -62,6 +62,8 @@ class UserController {
     try {
       var response_str = "";
 
+      console.log(req);
+
       var req_user = User.from(req.body);
 
       const userRepository = getRepository(User);
@@ -98,9 +100,9 @@ class UserController {
 
     try {
       const userRepository = getRepository(User);
-      console.log(req.body)
+      
       const user = await userRepository.findOneOrFail(req.body);
-
+      console.log(user);
       res.status(HttpStatus.OK).send(user);
     } catch (e) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
