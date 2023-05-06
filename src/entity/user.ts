@@ -1,5 +1,5 @@
 import {
-  Column, CreateDateColumn,
+  Column,
   Entity,
   JoinTable,
   ManyToMany,
@@ -10,6 +10,7 @@ import {
 import {classToPlain, Exclude} from "class-transformer";
 import { Group } from "./group";
 import { Post } from "./post";
+import {classToPlain} from "class-transformer";
 
 @Entity()
 @Unique(["username"])
@@ -43,9 +44,6 @@ export class User {
 
   @Column()
   email!: string;
-
-  @Column()
-  university!: string;
 
   @Column()
   imageString!: string;
