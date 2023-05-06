@@ -18,6 +18,6 @@ router.post("/delete/:id", PostController.delete);
 router.post("/createPost", PostController.createPost);
 
 //GetPhoto
-router.get("/getPhoto", PostController.getPhoto);
+router.post("/getPhoto", PostController.getPhoto);
 
 export default router;

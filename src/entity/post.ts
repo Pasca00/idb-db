@@ -10,6 +10,7 @@ import {
 import {User} from "./user";
 import {Group} from "./group";
 import {PostFile} from "./postFile";
+import {classToPlain, Exclude} from "class-transformer";
 
 @Entity()
 export class Post {
@@ -49,4 +50,8 @@ export class Post {
     alreadyLiked!: boolean;
     userLikesIds!: number[];
     timeCreatedString!: string;
+
+    toJSON() {
+        return classToPlain(this);
+    }
 }

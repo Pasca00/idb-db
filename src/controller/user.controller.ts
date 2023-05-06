@@ -98,9 +98,9 @@ class UserController {
 
     try {
       const userRepository = getRepository(User);
-      console.log(req.body)
+      
       const user = await userRepository.findOneOrFail(req.body);
-
+      console.log(req.body);
       res.status(HttpStatus.OK).send(user);
     } catch (e) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();

@@ -15,6 +15,6 @@ router.post("/update", UserController.update);
 router.post("/delete/:id", UserController.delete);
 
 //FindOneOrFail
-router.get("/findOneOrFail", UserController.findOneOrFail);
+router.post("/findOneOrFail", UserController.findOneOrFail);
 
 export default router;
