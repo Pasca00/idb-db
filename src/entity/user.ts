@@ -10,7 +10,6 @@ import {
 import {classToPlain, Exclude} from "class-transformer";
 import { Group } from "./group";
 import { Post } from "./post";
-import {classToPlain} from "class-transformer";
 
 @Entity()
 @Unique(["username"])
