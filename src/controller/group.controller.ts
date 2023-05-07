@@ -7,6 +7,8 @@ import { User } from "../entity/user";
 import { Post } from "../entity/post";
 // import config from "../config/config";
 import * as HttpStatus from 'http-status';
+import { PostFile } from "../entity/postFile";
+import { FileController } from "./file.controller";
 
 class GroupController {
 
@@ -117,7 +119,10 @@ class GroupController {
         let userId = req.body.userId;
         let groupId = req.body.groupId;
 
+        console.log(lastIndex, userId, groupId);
+
         try {
+            let postRepository = await getRepository(Post);
             let user = await getRepository(User).findOneOrFail({ where: { id: userId } })
             let query = await getRepository(Post).createQueryBuilder("post")
                 .where("post.groupId = :groupId", { groupId: groupId})
@@ -126,13 +131,21 @@ class GroupController {
                 .loadRelationIdAndMap("post.userLikesIds", "post.userLikes")
                 .orderBy("post.id").limit(10);
 
-            let posts = await query.getMany();
+            let posts: Post[] = await query.getMany();
+
+            for (let i = 0; i < posts.length; i++) {
+                let post = await postRepository.findOneOrFail({relations: ['postFiles'], where: { id: posts[i].id }});
+                posts[i].imageString = await FileController.getPhoto(post.postFiles[0].fileName);
+            }
 
             checkLikedPosts(user, posts);
             getTimeCreated(posts);
 
+            console.log(posts);
+
             res.status(HttpStatus.OK).send(posts);
         } catch (e) {
+            console.log(e);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
         }
     }
