@@ -50,6 +50,7 @@ export class Post {
     alreadyLiked!: boolean;
     userLikesIds!: number[];
     timeCreatedString!: string;
+    imageString!: string;
 
     toJSON() {
         return classToPlain(this);

@@ -20,4 +20,7 @@ router.post("/createPost", PostController.createPost);
 //GetPhoto
 router.post("/getPhoto", PostController.getPhoto);
 
+//FindOneOrFail
+router.post("/findOneOrFail", PostController.findOneOrFail);
+
 export default router;

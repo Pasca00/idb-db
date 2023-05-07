@@ -152,6 +152,20 @@ class PostController {
           res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
         }
       };
+
+    static findOneOrFail = async (req: Request, res: Response) => {
+      let response = null as any;
+      try {
+          const postRepository = getRepository(Post);
+          console.log(req.body);
+          const post = await postRepository.findOneOrFail(req.body);
+  
+        res.status(HttpStatus.OK).send(post);
+      } catch (e) {
+        console.log(e);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+      }
+    };
 }
 
 export default PostController;
