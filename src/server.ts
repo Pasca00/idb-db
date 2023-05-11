@@ -39,7 +39,7 @@ const main = async () => {
   // app.use(cors({
   //   origin: ['http://localhost:4200']
   // }))
-  app.use(cors());
+  // app.use(cors());
   app.use(bodyParser.json({ limit: '100mb' }));
   app.use(upload());
 
