@@ -1,0 +1,136 @@
+version: '3.8'
+
+services:
+  swarm-visualizer:
+    image: dockersamples/visualizer
+    ports:
+      - 5000:8080
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+
+  idp-mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_USER: socialnetwork
+      MYSQL_PASSWORD: socialnetwork
+      MYSQL_DATABASE: socialnetwork
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_USER: root
+    ports:
+      - 3306:3306
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp --max_allowed_packet=20M
+    networks:
+      - db-net
+      - php-admin-net
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8091:80
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on:
+      - idp-mariadb
+    networks:
+      - php-admin-net
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+
+  idp-db:
+    image: eduard24/idp:db
+    ports:
+      - 8081:8081
+    depends_on:
+      - idp-mariadb
+    networks:
+      - auth-db-net
+      - be-db-net
+      - db-net
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+
+  idp-be:
+    image: eduard24/idp:be
+    ports:
+      - 8083:8083
+    depends_on:
+      - idp-mariadb
+    networks:
+      - fe-net
+      - be-db-net
+    deploy:
+      replicas: 4
+      placement:
+          max_replicas_per_node: 2
+      update_config:
+          parallelism: 2
+          order: start-first
+      restart_policy:
+          condition: on-failure
+      rollback_config:
+          parallelism: 2
+          order: stop-first
+
+  idp-auth:
+    image: eduard24/idp:auth
+    ports:
+      - 8080:8080
+    depends_on:
+      - idp-mariadb
+    networks:
+      - fe-net
+      - auth-db-net
+    deploy:
+      replicas: 2
+      placement:
+          max_replicas_per_node: 1
+      update_config:
+          parallelism: 2
+          order: start-first
+      restart_policy:
+          condition: on-failure
+      rollback_config:
+          parallelism: 2
+          order: stop-first
+
+  idp-fe:
+    image: eduard24/idp:fe
+    ports:
+      - 4200:80
+    depends_on:
+      - idp-be
+    networks:
+      - fe-net
+    deploy:
+      replicas: 4
+      placement:
+          max_replicas_per_node: 2
+      update_config:
+          parallelism: 2
+          order: start-first
+      restart_policy:
+          condition: on-failure
+      rollback_config:
+          parallelism: 2
+          order: stop-first
+
+networks:
+  fe-net:
+  auth-db-net:
+  be-db-net:
+  db-net:
+  php-admin-net:
