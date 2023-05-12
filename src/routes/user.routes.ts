@@ -8,10 +8,13 @@ router.post("/create", UserController.create);
 //Get user
 router.get("/get/:by/:id", UserController.get);
 
-//Update an user
+//Update a user
 router.post("/update", UserController.update);
 
-//Delete an user by id
+// Edit user
+router.patch("/:id", UserController.save);
+
+//Delete a user by id
 router.post("/delete/:id", UserController.delete);
 
 //FindOneOrFail
