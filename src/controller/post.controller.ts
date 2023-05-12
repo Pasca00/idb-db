@@ -135,7 +135,7 @@ class PostController {
 
         await postRepository.save(post);
 
-        res.status(HttpStatus.CREATED).send();
+        res.status(HttpStatus.CREATED).send(post);
         } catch (e) {
             console.log(e);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
@@ -145,24 +145,20 @@ class PostController {
     static getPhoto = async (req: Request, res: Response) => {
         const image = req.body.image;
         try {
-          
           const photo = await FileController.getPhoto(image);
           res.status(HttpStatus.OK).send({imageString: photo});
         } catch (e) {
-          res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+          res.status(HttpStatus.OK).send({imageString: ''});
         }
       };
 
     static findOneOrFail = async (req: Request, res: Response) => {
-      let response = null as any;
       try {
           const postRepository = getRepository(Post);
-          console.log(req.body);
           const post = await postRepository.findOneOrFail(req.body);
   
-        res.status(HttpStatus.OK).send(post);
+          res.status(HttpStatus.OK).send(post);
       } catch (e) {
-        console.log(e);
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
       }
     };

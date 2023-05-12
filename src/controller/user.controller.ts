@@ -5,6 +5,7 @@ import {validate} from "class-validator";
 import {User} from "../entity/user";
 // import config from "../config/config";
 import * as HttpStatus from 'http-status';
+import {FileController} from "./file.controller";
 
 class UserController {
 
@@ -95,6 +96,29 @@ class UserController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
     }
   };
+
+  static save = async (req: Request, res: Response) => {
+    const user: User = req.body;
+    console.log(user)
+    const userRepository = getRepository(User);
+    const temp = user.profilePic;
+
+    // Upload photo if exists
+    if (!user.profilePic.includes("src")) {
+      user.profilePic = `src/asset/user/${user.id}.png`;
+      await Promise.resolve(FileController.uploadPhoto(temp, user.profilePic));
+    }
+
+    //Try to save, if fails, that means username already in use
+    try {
+      await userRepository.update(user.id, user);
+    } catch (e) {
+      res.status(HttpStatus.CONFLICT).send("username already in use");
+      return;
+    }
+    //After all send a 204 (no content, but accepted) response
+    res.status(HttpStatus.NO_CONTENT).send();
+  }
 
   static findOneOrFail = async (req: Request, res: Response) => {
 
