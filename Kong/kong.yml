@@ -1,0 +1,16 @@
+_format_version: "2.1"
+
+services:
+  - name: idp-be
+    url: http://idp-be:8083/api
+    routes:
+      - name: be-service-route
+        paths: 
+          - /be
+          
+  - name: idp-auth
+    url: http://idp-auth:8080/api/auth
+    routes:
+      - name: auth-service-route
+        paths: 
+          - /auth
