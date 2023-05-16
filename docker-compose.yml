@@ -88,6 +88,10 @@ services:
         - 8444:8444
     networks:
         - fe-net
+    depends_on:
+      - idp-be
+      - idp-fe
+      - idp-auth
 
 networks:
   fe-net:
