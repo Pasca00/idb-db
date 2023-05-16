@@ -14,3 +14,18 @@ services:
       - name: auth-service-route
         paths: 
           - /auth
+
+plugins:
+  - name: rate-limiting
+    config: 
+      minute: 10
+      limit_by: ip
+      policy: local
+
+  - name: cors
+    service: idp-be
+    config:
+      origins: 
+       - "*"
+
+  - name: bot-detection
