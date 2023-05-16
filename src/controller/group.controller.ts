@@ -135,7 +135,7 @@ class GroupController {
 
             for (let i = 0; i < posts.length; i++) {
                 let post = await postRepository.findOneOrFail({relations: ['postFiles'], where: { id: posts[i].id }});
-                posts[i].imageString = await FileController.getPhoto(post.postFiles[0].fileName);
+                // posts[i].imageString = await FileController.getPhoto(post.postFiles[0].fileName);
             }
 
             checkLikedPosts(user, posts);
