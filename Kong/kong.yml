@@ -16,12 +16,6 @@ services:
           - /auth
 
 plugins:
-  - name: rate-limiting
-    config: 
-      minute: 10
-      limit_by: ip
-      policy: local
-
   - name: cors
     config:
       origins:
