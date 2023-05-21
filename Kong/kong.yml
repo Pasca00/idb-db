@@ -23,9 +23,22 @@ plugins:
       policy: local
 
   - name: cors
-    service: idp-be
     config:
-      origins: 
-       - "*"
+      origins:
+        - '*'
+      methods:
+        - GET
+        - POST
+        - OPTIONS
+        - DELETE
+        - PUT
+      credentials: true
+      max_age: 3600
+      preflight_continue: false
 
   - name: bot-detection
+
+  - name: file-log
+    config:
+      path: /file.log
+      reopen: false

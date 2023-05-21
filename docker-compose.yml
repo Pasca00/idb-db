@@ -47,7 +47,7 @@ services:
     depends_on:
       - idp-mariadb
     networks:
-      - fe-net
+      - kong-be
       - be-db-net
 
   idp-auth:
@@ -57,7 +57,7 @@ services:
     depends_on:
       - idp-mariadb
     networks:
-      - fe-net
+      - kong-auth
       - auth-db-net
 
   idp-fe:
@@ -68,26 +68,28 @@ services:
       - idp-be
     networks:
       - fe-net
-    
+
   kong:
     image: kong:latest
     volumes:
-        - ./Kong:/usr/local/kong/declarative
+      - ./Kong:/usr/local/kong/declarative
     environment:
-        KONG_DATABASE: 'off'
-        KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
-        KONG_PROXY_ACCESS_LOG: /dev/stdout
-        KONG_ADMIN_ACCESS_LOG: /dev/stdout
-        KONG_PROXY_ERROR_LOG: /dev/stderr
-        KONG_ADMIN_ERROR_LOG: /dev/stderr
-        KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
     ports:
-        - 8000:8000
-        - 8443:8443
-        - 8001:8001
-        - 8444:8444
+      - 8000:8000
+      - 8443:8443
+      - 8001:8001
+      - 8444:8444
     networks:
-        - fe-net
+      - fe-net
+      - kong-auth
+      - kong-be
     depends_on:
       - idp-be
       - idp-fe
@@ -95,6 +97,8 @@ services:
 
 networks:
   fe-net:
+  kong-be:
+  kong-auth:
   auth-db-net:
   be-db-net:
   db-net:

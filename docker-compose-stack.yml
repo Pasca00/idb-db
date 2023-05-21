@@ -70,7 +70,7 @@ services:
     depends_on:
       - idp-mariadb
     networks:
-      - fe-net
+      - kong-be
       - be-db-net
     deploy:
       replicas: 4
@@ -92,7 +92,7 @@ services:
     depends_on:
       - idp-mariadb
     networks:
-      - fe-net
+      - kong-auth
       - auth-db-net
     deploy:
       replicas: 2
@@ -147,6 +147,8 @@ services:
       - 8444:8444
     networks:
       - fe-net
+      - kong-auth
+      - kong-be
     depends_on:
       - idp-be
       - idp-fe
@@ -158,6 +160,8 @@ services:
 
 networks:
   fe-net:
+  kong-be:
+  kong-auth:
   auth-db-net:
   be-db-net:
   db-net:
