@@ -12,7 +12,7 @@ const main = async () => {
   try {
     await createConnection({
       "type": "mariadb",
-      "host": "localhost",
+      "host": "idp-mariadb",
       "port": 3306,
       "username": "socialnetwork",
       "password": "socialnetwork",
@@ -36,9 +36,10 @@ const main = async () => {
 
   //middlewares
   app.use(helmet());
-  app.use(cors({
-    origin: ['http://localhost:4200']
-  }))
+  // app.use(cors({
+  //   origin: ['http://localhost:4200']
+  // }))
+  // app.use(cors());
   app.use(bodyParser.json({ limit: '100mb' }));
   app.use(upload());
 

@@ -1,0 +1,44 @@
+_format_version: "2.1"
+
+services:
+  - name: idp-be
+    url: http://idp-be:8083/api
+    routes:
+      - name: be-service-route
+        paths: 
+          - /be
+          
+  - name: idp-auth
+    url: http://idp-auth:8080/api/auth
+    routes:
+      - name: auth-service-route
+        paths: 
+          - /auth
+
+plugins:
+  - name: rate-limiting
+    config: 
+      minute: 10
+      limit_by: ip
+      policy: local
+
+  - name: cors
+    config:
+      origins:
+        - '*'
+      methods:
+        - GET
+        - POST
+        - OPTIONS
+        - DELETE
+        - PUT
+      credentials: true
+      max_age: 3600
+      preflight_continue: false
+
+  - name: bot-detection
+
+  - name: file-log
+    config:
+      path: /file.log
+      reopen: false

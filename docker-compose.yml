@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  idp-mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_USER: socialnetwork
+      MYSQL_PASSWORD: socialnetwork
+      MYSQL_DATABASE: socialnetwork
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_USER: root
+    ports:
+      - 3306:3306
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp --max_allowed_packet=20M
+    networks:
+      - db-net
+      - php-admin-net
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8091:80
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on:
+      - idp-mariadb
+    networks:
+      - php-admin-net
+
+  idp-db:
+    image: eduard24/idp:db
+    ports:
+      - 8081:8081
+    depends_on:
+      - idp-mariadb
+    networks:
+      - auth-db-net
+      - be-db-net
+      - db-net
+
+  idp-be:
+    image: eduard24/idp:be
+    ports:
+      - 8083:8083
+    depends_on:
+      - idp-mariadb
+    networks:
+      - kong-be
+      - be-db-net
+
+  idp-auth:
+    image: eduard24/idp:auth
+    ports:
+      - 8080:8080
+    depends_on:
+      - idp-mariadb
+    networks:
+      - kong-auth
+      - auth-db-net
+
+  idp-fe:
+    image: eduard24/idp:fe
+    ports:
+      - 4200:80
+    depends_on:
+      - idp-be
+    networks:
+      - fe-net
+
+  kong:
+    image: kong:latest
+    volumes:
+      - ./Kong:/usr/local/kong/declarative
+    environment:
+      KONG_DATABASE: 'off'
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+    ports:
+      - 8000:8000
+      - 8443:8443
+      - 8001:8001
+      - 8444:8444
+    networks:
+      - fe-net
+      - kong-auth
+      - kong-be
+    depends_on:
+      - idp-be
+      - idp-fe
+      - idp-auth
+
+networks:
+  fe-net:
+  kong-be:
+  kong-auth:
+  auth-db-net:
+  be-db-net:
+  db-net:
+  php-admin-net:
