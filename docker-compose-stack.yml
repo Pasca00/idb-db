@@ -11,6 +11,15 @@ services:
       placement:
         constraints:
           - "node.role==manager"
+      update_config:
+          order: stop-first
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+      rollback_config:
+          order: stop-first
 
   idp-mariadb:
     image: mariadb
@@ -31,6 +40,15 @@ services:
       placement:
         constraints:
           - "node.role==manager"
+      update_config:
+          order: stop-first
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+      rollback_config:
+          order: stop-first
 
   phpmyadmin:
     image: phpmyadmin
@@ -47,6 +65,15 @@ services:
       placement:
         constraints:
           - "node.role==manager"
+      update_config:
+          order: stop-first
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+      rollback_config:
+          order: stop-first
 
   idp-db:
     image: eduard24/idp:db
@@ -62,6 +89,15 @@ services:
       placement:
         constraints:
           - "node.role==manager"
+      update_config:
+          order: stop-first
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+      rollback_config:
+          order: stop-first
 
   idp-be:
     image: eduard24/idp:be
@@ -81,6 +117,9 @@ services:
           order: start-first
       restart_policy:
           condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
       rollback_config:
           parallelism: 2
           order: stop-first
@@ -95,7 +134,7 @@ services:
       - kong-auth
       - auth-db-net
     deploy:
-      replicas: 2
+      replicas: 3
       placement:
           max_replicas_per_node: 1
       update_config:
@@ -103,6 +142,9 @@ services:
           order: start-first
       restart_policy:
           condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
       rollback_config:
           parallelism: 2
           order: stop-first
@@ -124,6 +166,9 @@ services:
           order: start-first
       restart_policy:
           condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
       rollback_config:
           parallelism: 2
           order: stop-first
@@ -157,6 +202,15 @@ services:
       placement:
         constraints:
           - "node.role==manager"
+      update_config:
+          order: stop-first
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+      rollback_config:
+          order: stop-first
 
 networks:
   fe-net:
